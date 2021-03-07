@@ -1,7 +1,7 @@
 # Clock
 A full screen clock written in python.
 
-##Require
+## Require
 - True color support
 - escape character support
 - python3
