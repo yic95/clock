@@ -101,9 +101,9 @@ default_font = [
     [
         "  ,#,   ",
         "  #:#   ",
-        "  \'#\'   ",
         "        ",
-        "  ,#,   ",
+        "        ",
+        "        ",
         "  ###   ",
         "  \'#\'   ",
     ],
@@ -130,12 +130,13 @@ def string_to_banner(string: str, font: list=default_font)->str:
 
 
 def create_screen(string: str, font: list=default_font)->str:
+    # get terminal size
     terminal_width, terminal_height = os.get_terminal_size()
-    
+
     banner = string_to_banner(string, font).split('\n')  # 分解
     for i in range(len(banner)):
         banner[i] = list(banner[i])
-    
+
     #insert white spaces
     for i in range(len(banner)):
         banner[i].insert(0, ' '*int( (terminal_width-len(banner[i])) /2))
@@ -147,17 +148,19 @@ def create_screen(string: str, font: list=default_font)->str:
         banner[i] = ''.join(banner[i])
     return_string = '\n'.join(banner)  # 組合
 
+    # add a line if the screen size shorter then terminal size
     if len(return_string.split('\n')) < terminal_height:
         return_string += '\n'
 
-    return_string += '\033[38;5;200m'+time.strftime('%Y-%m-%d')+'\033[0m'
+    # add date
+    return_string += '\033[38;2;255;239;136m'+time.strftime('%Y-%m-%d')+'\033[0m'
     return return_string
 
 while True:
     try:
         current_time = time.strftime('%H:%M:%S')
         print(create_screen(current_time), end='')
-        time.sleep(1)
+        time.sleep(0.1)
         print('\x1b[2K\x1b[1A'*(os.get_terminal_size()[1]), end='')
     except KeyboardInterrupt:
         break
