@@ -5,7 +5,14 @@ clock
 main
 '''
 import time
-import os
+from os import get_terminal_size
+from os.path import sep as path_sep
+from os.path import expandvars, isfile
+from json import load
+
+
+config_font_file = expandvars('$HOME') + '{sep}.config{sep}clock{sep}font.json'.format(sep=path_sep)
+has_error = False
 
 default_font = [
     [
@@ -110,6 +117,22 @@ default_font = [
     7  # font height
 ]
 
+if isfile(config_font_file):
+    if bool(load(open(config_font_file, 'r'))) is True:
+        if ( type(font[11]) != type(1) ) or ( type(font[0:11]) != type(list) ):
+            font = default_font.copy()
+            has_error = True
+        else:
+            font = load(open(config_font_file))
+    else:
+        has_error = True
+else:
+    font = default_font.copy()
+    has_error = True
+
+if has_error == True:
+    print('\rERROR: Error font list.  Using default font.')
+
 
 def string_to_banner(string: str, font: list=default_font)->str:
     '''\
@@ -131,7 +154,7 @@ def string_to_banner(string: str, font: list=default_font)->str:
 
 def create_screen(string: str, font: list=default_font)->str:
     # get terminal size
-    terminal_width, terminal_height = os.get_terminal_size()
+    terminal_width, terminal_height = get_terminal_size()
 
     banner = string_to_banner(string, font).split('\n')  # 分解
     for i in range(len(banner)):
@@ -161,8 +184,7 @@ while True:
         current_time = time.strftime('%H:%M:%S')
         print(create_screen(current_time), end='')
         time.sleep(0.1)
-        print('\x1b[2K\x1b[1A'*(os.get_terminal_size()[1]), end='')
+        print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='')
     except KeyboardInterrupt:
         break
-print('\x1b[2K\x1b[1A'*(os.get_terminal_size()[1]), end='')
-
+print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='')
