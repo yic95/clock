@@ -10,204 +10,304 @@ from os.path import sep as path_sep
 from os.path import expandvars, isfile
 from json import load
 
-
-config_font_file = expandvars('$HOME') + '{sep}.config{sep}clock{sep}font.json'.format(sep=path_sep)
-has_error = False
-font = list()
-
-default_font = [
-    [
-        "  0##   ",
-        " #   #  ",
-        "#     # ",
-        "#     # ",
-        "#     # ",
-        " #   #  ",
-        "  ###   "
-    ],
-    [
-        "  ##    ",
-        " 1 #    ",
-        "   #    ",
-        "   #    ",
-        "   #    ",
-        "   #    ",
-        ".#####. "
-    ],
-    [
-        " ,####  ",
-        "2'    # ",
-        "      # ",
-        "    ,#' ",
-        " ,##    ",
-        "#'      ",
-        "####### "
-    ],
-    [
-        " ,###,  ",
-        "3'    # ",
-        "      # ",
-        "   ##'  ",
-        "      # ",
-        "#,    # ",
-        " '###'  "
-    ],
-    [
-        "  ,#    ",
-        " ,4     ",
-        ",#'     ",
-        "#'  #   ",
-        "####### ",
-        "    #   ",
-        "    #   "
-    ],
-    [
-        "5###### ",
-        "#       ",
-        "#  __   ",
-        "##'^^'# ",
-        "      # ",
-        ",    ,# ",
-        " '==='  "
-    ],
-    [
-        " ,####, ",
-        ",#'  '6 ",
-        "#'      ",
-        "# ####, ",
-        "##    # ",
-        "#     # ",
-        "'#####' "
-    ],
-    [
-        "7###### ",
-        "#    ,# ",
-        "#    #' ",
-        "    ,#' ",
-        "    #'  ",
-        "   ,#   ",
-        "   #'   "
-    ],
-    [
-        " ,###,  ",
-        "8'   '# ",
-        "#,   ,# ",
-        " >###<  ",
-        "#'   '# ",
-        "#,   ,# ",
-        " '###'  ",
-    ],
-    [
-        " #####  ",
-        "#     # ",
-        "#     # ",
-        " ####,# ",
-        "    ,#' ",
-        "   ,#'  ",
-        "   9'   ",
-    ],
-    [
-        "  ,#,   ",
-        "  #:#   ",
-        "        ",
-        "        ",
-        "        ",
-        "  ###   ",
-        "  '#'   ",
-    ],
-    7  # font height
-]
-
-if isfile(config_font_file):
-    font = load(open(config_font_file))
-    if bool(font) is True:
-        if type(font[11]) == type(1):
-            pass
-        else:
-            font = default_font.copy()
-            has_error = True
-    else:
-        has_error = True
-        font = default_font.copy()
-else:
-    font = default_font.copy()
-    has_error = True
-
-if has_error == True:
-    print('\a\rERROR: Error font list.  Using default font.')
-
-
-def string_to_banner(string: str, font: list=font)->str:
-    '''\
-    font[0] to font[9] are numbers. start with 0
-    font[10] is :
-    font[11] is font height
-    '''
-    return_text = ''
-    for i in range(font[11]):
-        for st in string:
-            if st in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] :
-                return_text += font[int(st)][i]
+class Font:
+    """\
+    class Font:
+        methods:
+            load_custom_font: Load custom font. Use default font if this method is not called.
+            get_font: Return self.font.
+        vars:
+            config_font_file: The path to the font file.
+            has_error: True if the custom font has error.
+            default_font: Default font.
+            font: font.
+    """
+    def __init__(self, path_to_font:str=''):
+        """\
+        path_to_font: The path to the font file. Default is '~/.config/clock/font.json'
+        """
+        self.config_font_file = path_to_font
+        self.has_error = False
+        self.font = list()
+        self.default_font = [
+            [
+                "  0##   ",
+                " #   #  ",
+                "#   / # ",
+                "#  /  # ",
+                "# /   # ",
+                " #   #  ",
+                "  ###   "
+            ],
+            [
+                "  ##    ",
+                " 1 #    ",
+                "   #    ",
+                "   #    ",
+                "   #    ",
+                "   #    ",
+                ".#####. "
+            ],
+            [
+                " ,####  ",
+                "2'    # ",
+                "      # ",
+                "    ,#' ",
+                " ,##    ",
+                "#'      ",
+                "####### "
+            ],
+            [
+                " ,###,  ",
+                "3'    # ",
+                "      # ",
+                "   ##'  ",
+                "      # ",
+                "#,    # ",
+                " '###'  "
+            ],
+            [
+                "  ,#    ",
+                " ,4     ",
+                ",#'     ",
+                "#'  #   ",
+                "####### ",
+                "    #   ",
+                "    #   "
+            ],
+            [
+                "5###### ",
+                "#       ",
+                "#  __   ",
+                "##'^^'# ",
+                "      # ",
+                ",    ,# ",
+                " '==='  "
+            ],
+            [
+                " ,####, ",
+                ",#'  '6 ",
+                "#'      ",
+                "# ####, ",
+                "##    # ",
+                "#     # ",
+                "'#####' "
+            ],
+            [
+                "7###### ",
+                "#    ,# ",
+                "#    #' ",
+                "    ,#' ",
+                "    #'  ",
+                "   ,#   ",
+                "   #'   "
+            ],
+            [
+                " ,###,  ",
+                "8'   '# ",
+                "#,   ,# ",
+                " >###<  ",
+                "#'   '# ",
+                "#,   ,# ",
+                " '###'  ",
+            ],
+            [
+                " #####  ",
+                "#     # ",
+                "#     # ",
+                " ####,# ",
+                "    ,#' ",
+                "   ,#'  ",
+                "   9'   ",
+            ],
+            [
+                "  ,#,   ",
+                "  #:#   ",
+                "        ",
+                "        ",
+                "        ",
+                "  ###   ",
+                "  '#'   ",
+            ],
+            7  # font height
+        ]
+        self.font = self.default_font
+    def load_custom_font(self):
+        '''\
+        load custom font, save it to self.font and return True if font is valid
+        if font is not valid, return False
+        '''
+        has_error = False
+        if isfile(self.config_font_file):
+            font = load(open(self.config_font_file))
+            has_error = False
+            if bool(font) is True:
+                if type(font[11]) == type(1):
+                    self.font = font.copy()
+                else:
+                    self.font = self.default_font
+                    has_error = True
             else:
-                return_text += font[10][i]
-        if i != font[11]-1:  # detect if not last line
-            return_text += '\n'
-    return return_text
-
-
-def create_screen(string: str, font: list=font)->str:
-    # get terminal size
-    terminal_width, terminal_height = get_terminal_size()
-
-    # 分解
-    banner = string_to_banner(string, font).split('\n')
-    for i in range(len(banner)):
-        banner[i] = list(banner[i])
-
-    font_height = len(banner)
-
-    # insert blank lines
-    for _ in range(int((terminal_height-font_height)/2)):
-        banner.insert(0, list('\n'))
-
-    #insert white spaces
-    for i in range(len(banner)):
-        terminal_width_space = ' '*int( (terminal_width-len(banner[i])) /2)
-        if banner[i] == list('\n'):
-            banner[i].insert(0, ' '*(terminal_width))
+                has_error = True
+                self.font = self.default_font
         else:
-            banner[i].insert(0, terminal_width_space)
-            banner[i].append(terminal_width_space)
-            banner[i].append('\n')
+            self.font = self.default_font
 
-    for _ in range(int((terminal_height-font_height)/2)-1):
-        banner.append(list(' '* terminal_width + '\n'))
-
-    # 組合
-    for i in range(len(banner)):
-        banner[i] = ''.join(banner[i])
-    return_string = ''.join(banner)
+        if has_error is True:
+            self.has_error = True
+            print('\a\rERROR: Error font list.  Using default font.')
+    def get_font(self):
+        """return self.font"""
+        return self.font
 
 
-    # add a line if the screen size shorter then terminal size
-    if len(return_string.split('\n')) < terminal_height:
-        return_string += '\n'
+class Theme:
+    def __init__(self, path_to_theme: str=''):
+        self.config_theme_path = path_to_theme
+        self.default_theme = {
+                'effect':'[38;5;255;48;5;0m'}
+        self.theme=self.default_theme.copy()
+    def read_config(self):
+        if isfile(self.config_theme_path):
+            self.theme = load(open(self.config_theme_path))
+            # add default settings.
+            for k, v in self.default_theme.items():
+                self.theme.setdefault(k, v)
 
-    # add date
-    return_string += '\033[38;2;255;239;136m'+time.strftime('%Y-%m-%d')+'\033[0m'
-    if time.strftime('%M%S').endswith('00:00'):
-        return_string += '\a'
 
-    # \r to return cursor to the begin of the line
-    return_string += '\r'
-    return return_string
 
-while True:
-    try:
-        current_time = time.strftime('%H:%M:%S')
-        print(create_screen(current_time), end='')
-        time.sleep(1.0)
-        print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='')
-    except KeyboardInterrupt:
-        break
-print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='')
+class Settings:
+    """\
+    class Settings:
+        methods:
+            |read_config: return config.
+        vars:
+            |config_file_path : ~/.config/clock/settings.json
+    """
+    def __init__(self):
+        self.config_files_dir = expandvars('$HOME')+\
+                '{sep}.config{sep}clock'.format(sep=path_sep)
+        self.config_file_path = self.config_files_dir + '{sep}setting.json'.format(sep=path_sep)
+
+        self.default_setting = {
+            'font' : self.config_files_dir + '{sep}font.json'.format(sep=path_sep),
+            'theme' : self.config_files_dir + '{sep}theme.json'.format(sep=path_sep),
+            'once': False
+        }
+        self.settings = self.default_setting.copy()
+    def read_settings(self)-> dict:
+        """read settings(dict) from file config_file_path"""
+        if isfile(self.config_file_path):
+            self.settings = load(open(self.config_file_path))
+            # add default settings.
+            for k, v in self.default_setting.items():
+                self.settings.setdefault(k, v)
+    def get_settings(self):
+        """get the settings dict"""
+        return self.settings
+
+class App:
+    """\
+    main app.
+    require classes: Font
+    """
+    def __init__(self):
+        self.settings = Settings()
+        self.settings.read_settings()
+        self.font = Font(self.settings.settings['font'])
+        self.font.load_custom_font()
+        self.theme = Theme(self.settings.settings['theme'])
+        self.theme.read_config()
+        self.time_string = time.strftime('%H:%M:%S')
+
+    def string_to_banner(self)->str:
+        '''\
+        return a ascii art text.
+        font from self.font, text from self.time_string.
+        '''
+        return_text = ''
+        font = self.font.font
+        string = self.time_string
+        for i in range(font[11]):
+            for st in string:
+                if st in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] :
+                    return_text += font[int(st)][i]
+                else:
+                    return_text += font[10][i]
+            if i != font[11]-1:  # detect if not last line
+                return_text += '\n'
+        return return_text
+
+
+    def get_screen(self)->str:
+        """\
+        return a full-screen text.
+        """
+        # get terminal size
+        terminal_width, terminal_height = get_terminal_size()
+
+        # 分解
+        banner = self.string_to_banner().split('\n')
+        for i in range(len(banner)):
+            banner[i] = list(banner[i])
+        banner.insert(0, list('\n'))
+        banner.insert(0, list(time.strftime('%Y-%m-%d')))
+
+        font_height = len(banner)
+
+        # insert blank lines before text
+        for _ in range(int((terminal_height-font_height)/2)):
+            banner.insert(0, list('\n'))
+
+        # insert white spaces
+        for i in range(len(banner)):
+            terminal_width_space = ' '*int( (terminal_width-len(banner[i])) /2)
+            if banner[i] == list('\n'):
+                banner[i].insert(0, ' '*(terminal_width))
+            else:
+                banner[i].insert(0, terminal_width_space)
+                banner[i].append(terminal_width_space)
+                banner[i].append('\n')
+
+        # insert blank lines after text
+        for _ in range(int((terminal_height-font_height)/2)-1):
+            banner.append(list(' '* terminal_width + '\n'))
+        banner[0].insert(0, '\033'+self.theme.theme['effect'])
+        banner[-1].append('\033[0m')
+
+        # 組合
+        for i in range(len(banner)):
+            banner[i] = ''.join(banner[i])
+        return_string = ''.join(banner)
+
+
+        # add a line if the screen size shorter then terminal size
+        if len(return_string.split('\n')) < terminal_height:
+            return_string += '\n'
+
+        # add date
+        # return_string += time.strftime('%Y-%m-%d')+'\033[0m'
+
+        # \r to return cursor to the begin of the line
+        return_string += '\r'
+        return return_string
+    def run(self):
+        """run the app and exit when KeyboardInterrupt occue"""
+        if self.settings.settings['once'] == False:
+            while True:
+                try:
+                    self.time_string = time.strftime('%H:%M:%S')
+                    print(self.get_screen(), end='')
+                    time.sleep(0.5)
+                    print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='')  # clear the screen
+                except KeyboardInterrupt:
+                    break
+            print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='') #  clear the screen
+        else:
+            self.time_string = time.strftime('%H:%M:%S')
+            print(self.get_screen(), end='')
+
+
+if __name__ == '__main__':
+    app = App()
+    app.run()
