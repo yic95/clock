@@ -14,7 +14,7 @@ A full screen clock written in python.
 - not require curses
 - custom refresh time
 
-## useage
+## Useage
 
 `Ctrl+c` : exit
 
@@ -138,7 +138,7 @@ Font is a JSON file in `~/.config/clock/font.json` (default) like this:
 ]
 ```
 
-### theme
+### Theme
 Theme is a json file in `~/.config/clock/theme.json` (default) like this:
 ```json
 {
@@ -147,11 +147,11 @@ Theme is a json file in `~/.config/clock/theme.json` (default) like this:
 }
 ```
 
-### other settings
+### Other settings
 In `~/.config/clock/setting.json`:
 ```json
 {
-    "once":true,  // execue once
+    "once":true,  // execute once
     "refresh_time":1,
     "date_left_bot_corner":true,
     "time_format":"%H:%M:%S",
