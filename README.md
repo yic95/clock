@@ -12,6 +12,7 @@ A full screen clock written in python.
 
 - full screen
 - not require curses
+- custom refresh time
 
 ## useage
 
@@ -21,7 +22,7 @@ A full screen clock written in python.
 
 ### Font
 
-Font is a JSON file in `~/.config/clock/font.json` like this:
+Font is a JSON file in `~/.config/clock/font.json` (default) like this:
 
 ```json
 [
@@ -124,22 +125,38 @@ Font is a JSON file in `~/.config/clock/font.json` like this:
         "  ###   ",
         "  '#'   ",
     ],
+    [ // space
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+    ],
     7 //font height
 ]
 ```
 
 ### theme
-Theme is a json file in `~/.config/clock/theme.json` like this:
+Theme is a json file in `~/.config/clock/theme.json` (default) like this:
 ```json
 {
     //         ---fg--- --bg--
     "effect":"[38;5;255;48;5;0m"
 }
 ```
-### execute once
-Add these lines in `~/.config/clock/setting.json`:
+
+### other settings
+In `~/.config/clock/setting.json`:
 ```json
 {
-    "once":true
+    "once":true,  // execue once
+    "refresh_time":1,
+    "date_left_bot_corner":true,
+    "time_format":"%H:%M:%S",
+    "date_format":"%Y-%m-%d",
+    "font":"full/path/to/the/font",
+    "theme":"full/path/to/the/theme"
 }
 ```
