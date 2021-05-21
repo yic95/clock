@@ -40,13 +40,13 @@ class Font:
                 "  ###   "
             ],
             [
-                "  ##    ",
-                " 1 #    ",
-                "   #    ",
-                "   #    ",
-                "   #    ",
-                "   #    ",
-                ".#####. "
+                " ##   ",
+                "1 #   ",
+                "  #   ",
+                "  #   ",
+                "  #   ",
+                "  #   ",
+                "##### "
             ],
             [
                 " ,####  ",
@@ -121,22 +121,22 @@ class Font:
                 "   9'   ",
             ],
             [
-                "  ,#,   ",
-                "  #:#   ",
-                "        ",
-                "        ",
-                "        ",
-                "  ###   ",
-                "  '#'   ",
+                " ,#, ",
+                " #:# ",
+                "     ",
+                "     ",
+                "     ",
+                " ### ",
+                " '#' ",
             ],
             [
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+                "      ",
+                "      ",
+                "      ",
+                "      ",
+                "      ",
+                "      ",
+                "      ",
             ],
             7  # font height
         ]
@@ -151,15 +151,12 @@ class Font:
             font = load(open(self.config_path))
             has_error = False
             if bool(font) is True:
-                if type(font[-1]) == type(1):
-                    self.font = font.copy()
-                else:
-                    self.font = self.default_font
-                    has_error = True
+                self.font = font.copy()
             else:
                 has_error = True
                 self.font = self.default_font
         else:
+            has_error = True
             self.font = self.default_font
 
         if has_error is True:
@@ -292,8 +289,6 @@ class App:
         # insert blank lines after text
         for _ in range(int((terminal_height-font_height)/2)-1):
             banner.append(list(' '* terminal_width + '\n'))
-        # banner[0].insert(0, '\033'+self.theme.theme['effect'])
-        # banner[-1].append('\033[0m')
 
         # 組合
         for i in range(len(banner)):
