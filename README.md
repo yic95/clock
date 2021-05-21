@@ -5,8 +5,8 @@ A full screen clock written in python.
 ## Require
 
 - True color support
-- escape character support
-- python3
+- Escape character support
+- Python3
 
 ## Features
 
@@ -139,7 +139,10 @@ Font is a JSON file in `~/.config/clock/font.json` (default) like this:
 ```
 
 ### Theme
+
+Color format is escape code, see [this](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors) for more information.
 Theme is a json file in `~/.config/clock/theme.json` (default) like this:
+
 ```json
 {
     //         ---fg--- --bg--
@@ -148,13 +151,15 @@ Theme is a json file in `~/.config/clock/theme.json` (default) like this:
 ```
 
 ### Other settings
+
 In `~/.config/clock/setting.json`:
+
 ```json
 {
     "once":true,  // execute once
     "refresh_time":1,
     "date_left_bot_corner":true,
-    "time_format":"%H:%M:%S",
+    "time_format":"%H:%M:%S", // only support numbers, : and space
     "date_format":"%Y-%m-%d",
     "font":"full/path/to/the/font",
     "theme":"full/path/to/the/theme"
