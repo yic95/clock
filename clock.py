@@ -9,6 +9,7 @@ from os import get_terminal_size
 from os.path import sep as path_sep
 from os.path import expandvars, isfile
 from json import load
+import threading
 
 class Font:
     """\
@@ -259,6 +260,8 @@ class App:
         self.font.load()
         self.theme = Theme(self.settings.settings['theme'])
         self.theme.load()
+        self.time_str = time.strftime(self.settings.settings['time_format'])
+        self.stop = False
 
     def string_to_banner(self)->str:
         '''\
@@ -267,7 +270,7 @@ class App:
         '''
         return_text = ''
         font = self.font.font
-        string = time.strftime(self.settings.settings['time_format'])
+        string = self.time_str
         for i in range(font[-1]):
             for st in string:
                 if st in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] :
@@ -285,8 +288,12 @@ class App:
             if i != font[-1]-1:  # detect if not last line
                 return_text += '\n'
         return return_text
-
-
+    def get_time(self):
+        """get time from time.strftime, store in self.time_str.  stop when self.stop == True"""
+        while True:
+            self.time_str = time.strftime(self.settings.settings['time_format'])
+            if self.stop is True:
+                break
     def get_screen(self)->str:
         """\
         return a full-screen text.
@@ -345,6 +352,8 @@ class App:
     def run(self):
         """run the app and until KeyboardInterrupt occue"""
         refresh_time = int(self.settings.settings['refresh_time'])
+        t = threading.Thread(target=self.get_time)
+        t.start()
         if self.settings.settings['once'] == False:
             while True:
                 try:
@@ -352,6 +361,7 @@ class App:
                     time.sleep(refresh_time)
                     print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='')  # clear the screen
                 except KeyboardInterrupt:
+                    self.stop = True
                     break
             print('\x1b[2K\x1b[1A'*(get_terminal_size()[1]), end='') #  clear the screen
         else:
