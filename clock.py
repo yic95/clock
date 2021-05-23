@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
 '''
-clock
+A full-screen clock in terminal.
 main
 '''
 import time
@@ -138,13 +138,40 @@ class Font:
                 "      ",
                 "      ",
             ],
+            [
+                "  .##.   ",
+                "  #  #   ",
+                " ,#  #,  ",
+                " #'  '#  ",
+                "######## ",
+                "#      # ",
+                "#      # ",
+            ],
+            [
+                "#####  ",
+                "#    # ",
+                "#   #  ",
+                "####   ",
+                "#      ",
+                "#      ",
+                "#      ",
+            ],
+            [
+                "_     _ ",
+                "##   ## ",
+                "# #.# # ",
+                "# '#' # ",
+                "#  #  # ",
+                "#     # ",
+                "#     # ",
+            ],
             7  # font height
         ]
         self.font = self.default_font
     def load(self):
         '''\
-        load custom font, save it to self.font and return True if font is valid
-        if font is not valid, return False
+        load custom font, load it to self.font and return True if font is valid
+        if font is not valid, return False, restore default font.
         '''
         has_error = False
         if isfile(self.config_path):
@@ -161,7 +188,7 @@ class Font:
 
         if has_error is True:
             self.has_error = True
-            print('\a\rERROR: Error font list.  Using default font.')
+            # print('\a\rERROR: Error font list.  Using default font.')
     def get_font(self):
         """return self.font"""
         return self.font
@@ -249,6 +276,12 @@ class App:
                     return_text += font[10][i]
                 elif st == ' ':
                     return_text += font[11][i]
+                elif st in ('a', 'A'):
+                    return_text += font[12][i]
+                elif st in ('p', 'P'):
+                    return_text += font[13][i]
+                elif st in ('m', 'M'):
+                    return_text += font[14][i]
             if i != font[-1]-1:  # detect if not last line
                 return_text += '\n'
         return return_text
