@@ -4,7 +4,6 @@ A full screen clock written in python.
 
 ## Require
 
-- True color support
 - Escape character support
 - Python3
 
@@ -159,9 +158,10 @@ In `~/.config/clock/setting.json`:
     "once":true,  // execute once
     "refresh_time":1,
     "date_left_bot_corner":true,
-    "time_format":"%H:%M:%S", // only support numbers, : and space
+    "time_format":"%H:%M:%S", // only support number, column, A, P, M, space
     "date_format":"%Y-%m-%d",
     "font":"full/path/to/the/font",
     "theme":"full/path/to/the/theme"
+    "space_between_char":2
 }
 ```
