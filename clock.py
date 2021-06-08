@@ -11,6 +11,8 @@ from os.path import expandvars, isfile
 from json import load
 import threading
 
+# TODO 漸層
+
 class Font:
     """\
     class Font:
@@ -234,7 +236,7 @@ class Settings:
             'date_left_bot_corner': True,
             'refresh_time': 1,
             'time_format': '%H:%M:%S',
-            'date_format': '%Y-%m-%d',
+            'date_format': '%Y-%m-%d %a',
             'space_between_char':2,
         }
         self.settings = self.default_setting.copy()
