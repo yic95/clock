@@ -10,8 +10,8 @@ from os.path import sep as path_sep
 from os.path import expandvars, isfile
 from json import load
 import threading
+import sys
 
-# TODO 漸層
 
 class Font:
     """\
@@ -179,7 +179,6 @@ class Font:
         has_error = False
         if isfile(self.config_path):
             font = load(open(self.config_path))
-            has_error = False
             if bool(font) is True:
                 self.font = font.copy()
             else:
@@ -192,6 +191,7 @@ class Font:
         if has_error is True:
             self.has_error = True
             # print('\a\rERROR: Error font list.  Using default font.')
+        return not has_error
     def get_font(self):
         """return self.font"""
         return self.font
@@ -215,7 +215,6 @@ class Theme:
                 self.theme.setdefault(k, v)
 
 
-
 class Settings:
     """\
     class Settings:
@@ -232,7 +231,6 @@ class Settings:
         self.default_setting = {
             'font' : self.config_files_dir + '{sep}font.json'.format(sep=path_sep),
             'theme' : self.config_files_dir + '{sep}theme.json'.format(sep=path_sep),
-            'once': False,
             'date_left_bot_corner': True,
             'refresh_time': 1,
             'time_format': '%H:%M:%S',
@@ -265,6 +263,7 @@ class App:
         self.theme.load()
         self.time_str = time.strftime(self.settings.settings['time_format'])
         self.stop = False
+        self.time_string = time.strftime('%H:%M:%S')
 
     def string_to_banner(self)->str:
         '''\
@@ -276,20 +275,23 @@ class App:
         string = self.time_str
         for i in range(font[-1]):
             for st in string:
+                return_text_plus = ''
                 if st in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] :
-                    return_text += font[int(st)][i]
+                    return_text_plus += font[int(st)][i]
                 elif st == ':':
-                    return_text += font[10][i]
+                    return_text_plus += font[10][i]
                 elif st == ' ':
-                    return_text += font[11][i]
+                    return_text_plus += font[11][i]
                 elif st in ('a', 'A'):
-                    return_text += font[12][i]
+                    return_text_plus += font[12][i]
                 elif st in ('p', 'P'):
-                    return_text += font[13][i]
+                    return_text_plus += font[13][i]
                 elif st in ('m', 'M'):
-                    return_text += font[14][i]
-                for _ in range(self.settings.settings['space_between_char']):
-                    return_text += ' '
+                    return_text_plus += font[14][i]
+                if st != string[-1]:
+                    for _ in range(self.settings.settings['space_between_char']):
+                        return_text_plus += ' '
+                return_text += return_text_plus
             if i != font[-1]-1:  # detect if not last line
                 return_text += '\n'
         return return_text
@@ -357,9 +359,9 @@ class App:
     def run(self):
         """run the app and until KeyboardInterrupt occue"""
         refresh_time = int(self.settings.settings['refresh_time'])
-        time_thread = threading.Thread(target=self.get_time)
-        time_thread.start()
-        if self.settings.settings['once'] == False:
+        if 'once' not in sys.argv:
+            time_thread = threading.Thread(target=self.get_time)
+            time_thread.start()
             while True:
                 try:
                     print(self.get_screen(), end='\r')
