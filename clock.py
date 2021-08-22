@@ -263,7 +263,7 @@ class App:
         self.theme.load()
         self.time_str = time.strftime(self.settings.settings['time_format'])
         self.stop = False
-        self.time_string = time.strftime('%H:%M:%S')
+        self.time_string = time.strftime(self.time_str)
 
     def string_to_banner(self)->str:
         '''\
