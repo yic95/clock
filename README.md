@@ -13,9 +13,21 @@ A full screen clock written in python.
 - Not require curses
 - Custom refresh time
 
-## Useage
+## Keybindings
 
 `Ctrl + c` : exit
+
+## Useage
+
+basic
+```
+$ python3 clock.py
+```
+
+Print out as Ascii art
+```
+$ python3 clock.py once
+```
 
 ## Customization
 
@@ -115,7 +127,7 @@ Font is a JSON file in `~/.config/clock/font.json` (default) like this:
         "   ,#'  ",
         "   9'   ",
     ],
-    [
+    [ // colon
         "  ,#,   ",
         "  #:#   ",
         "        ",
@@ -132,6 +144,33 @@ Font is a JSON file in `~/.config/clock/font.json` (default) like this:
         "        ",
         "        ",
         "        ",
+    ],
+    [
+        "  .##.  ",
+        "  #  #  ",
+        " ,#  #, ",
+        " #'  '# ",
+        "########",
+        "#      #",
+        "#      #",
+    ],
+    [
+        "##### ",
+        "#    #",
+        "#   # ",
+        "####  ",
+        "#     ",
+        "#     ",
+        "#     ",
+    ],
+    [
+        "_     _",
+        "##   ##",
+        "# #.# #",
+        "# '#' #",
+        "#  #  #",
+        "#     #",
+        "#     #",
     ],
     7 //font height
 ]
@@ -155,8 +194,7 @@ In `~/.config/clock/setting.json`:
 
 ```json
 {
-    "once":true,  // execute only once
-    "refresh_time":1,
+    "refresh_time" : 1, // time between screen refresh
     "date_left_bot_corner":true,
     "time_format":"%H:%M:%S", // only support number, colon(:), A, P, M, space( )
     "date_format":"%Y-%m-%d",
