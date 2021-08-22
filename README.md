@@ -9,13 +9,13 @@ A full screen clock written in python.
 
 ## Features
 
-- full screen
-- not require curses
-- custom refresh time
+- Full screen
+- Not require curses
+- Custom refresh time
 
 ## Useage
 
-`Ctrl+c` : exit
+`Ctrl + c` : exit
 
 ## Customization
 
@@ -155,10 +155,10 @@ In `~/.config/clock/setting.json`:
 
 ```json
 {
-    "once":true,  // execute once
+    "once":true,  // execute only once
     "refresh_time":1,
     "date_left_bot_corner":true,
-    "time_format":"%H:%M:%S", // only support number, column, A, P, M, space
+    "time_format":"%H:%M:%S", // only support number, colon(:), A, P, M, space( )
     "date_format":"%Y-%m-%d",
     "font":"full/path/to/the/font",
     "theme":"full/path/to/the/theme"
