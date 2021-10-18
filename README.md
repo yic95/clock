@@ -199,7 +199,7 @@ In `~/.config/clock/setting.json`:
     "time_format":"%H:%M:%S", // only support number, colon(:), A, P, M, space( )
     "date_format":"%Y-%m-%d",
     "font":"full/path/to/the/font",
-    "theme":"full/path/to/the/theme"
+    "theme":"full/path/to/the/theme",
     "space_between_char":2
 }
 ```
